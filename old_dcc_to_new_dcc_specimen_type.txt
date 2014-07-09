@@ -1,0 +1,15 @@
+ID	old_dcc_specimen_type	new_ID	new_dcc_specimen_type
+1	primary tumour	101	Primary tumour - solid tissue
+2	tumour local recurrence	102	Recurrent tumour - solid tissue
+3	tumour metastasis to local lymph node	103	Metastatic tumour - metastasis local to lymph node
+4	tumour metastasis to distant location	104	Metastatic tumour - metastasis to distant location
+5	peripheral blood	105	Primary tumour - blood derived (peripheral blood)
+6	bone marrow	106	Normal - bone marrow
+6	bone marrow	107	Primary tumour - blood derived (bone marrow)
+6	bone marrow	108	Recurrent tumour - blood derived (bone marrow)
+7	lymph node	109	Normal - lymph node
+7	lymph node	110	Metastatic tumour - lymph node
+8	normal control (tissue adjacent to primary)	111	Normal - tissue adjacent to primary
+9	normal control (blood)	112	Normal - blood derived
+10	normal control (other)	113	Normal - other
+11	tumour (other)	114	Recurrent tumour - other
