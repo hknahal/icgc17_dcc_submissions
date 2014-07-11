@@ -5,7 +5,6 @@ import fnmatch
 import os
 import sys, getopt
 import re
-import json
 import collections
 
 __title__	= "specimen_type_dcc_mapping.py"
@@ -15,22 +14,22 @@ __institution__	= "Ontario Institute for Cancer Research, ICGC DCC"
 __date__	= "2014-06-18"
 __version__	= "0.1"
 __description__	= "Maps old DCC specimen_type terms to new DCC specimen_type terms used in Release 17 specimen.0.specimen_type.v3 codelist"
-__usage__	= "python specimen_type_dcc_mapping.py -i <input directory name>"
+__usage__	= "python specimen_type_dcc_mapping.py -i <input directory name (optional) >"
 
 
 inputDir = ''
-log = open("dcc_specimen_type_mapping.log", "w") 			
+log = open("DCC_specimen_type_mapping.log", "w") 			
 mapping = collections.defaultdict(list)					
-mappingFile = open("old_dcc_to_new_dcc_specimen_type.txt", "r") 	
+mappingFile = open("oldDCC_to_newDCC_specimen_type_mapping.txt", "r") 	
 
 try:
    opts, args = getopt.getopt(sys.argv[1:], "hi:", ["idir="])
 except getopt.GetoptError:
-      print 'specimen_type_dcc_mapping.py -i <input directory>'
+      print 'specimen_type_dcc_mapping.py -i <input directory (optional) >'
       sys.exit(2)
 for opt, arg in opts:
    if opt == '-h':
-      print 'specimen_type_dcc_mapping.py -i <input directory>'
+      print 'specimen_type_dcc_mapping.py -i <input directory (optional) >'
       sys.exit()
    elif opt in ("-i", "--idir"):
       inputDir = arg
@@ -76,7 +75,6 @@ def do_mapping(mappingFile, specimenFiles):
       heading = specimen_content.pop(0)
       outputFile = (specimenFile.name).split("/")[-1]
       outputFile = outputFile + ".tmp"
-      #outFile = open("%s/%s"%(inputDir, outputFile), "w")
       if fnmatch.fnmatch(specimenFile.name, "*.bz2"):
          outFile = bz2.BZ2File("%s/%s"%(inputDir, outputFile), 'wb')
       elif fnmatch.fnmatch(specimenFile.name, "*.gz"):
@@ -84,7 +82,7 @@ def do_mapping(mappingFile, specimenFiles):
       else:
          outFile = open("%s/%s"%(inputDir, outputFile), "w")
       outFile.write("%s"%heading)
-      lineNum = 1
+      lineNum = 2
       for line in specimen_content:
          new_st = ''
          data = line.split("\t")
@@ -94,7 +92,7 @@ def do_mapping(mappingFile, specimenFiles):
              comment = ''
              for sptype in mapping[data[2]]:
 		comment += "\t%s: %s"%(sptype, new_specimen_types[sptype])
-             log.write("WARNING: %s\n"%comment)
+             log.write("%s\n"%comment)
          elif ( (data[2] == '-777') or (data[2] == '-888') ):
              log.write("WARNING: [Line Number %s]: specimen_type cannot used invalid codes -777/-888. Please specify specimen_type for sample %s\n"%(lineNum, data[1]))
          else:
@@ -105,7 +103,9 @@ def do_mapping(mappingFile, specimenFiles):
          outFile.write("\t".join(data))
       log.write("INFO: Done processing %s\n"%specimenFile.name)
       outFile.close()
+      os.rename(outFile.name, specimenFile.name)
  
 specimenFiles = getFile("specimen*")
 do_mapping(mappingFile, specimenFiles)
 log.close()
+print "specimen_type conversion complete. Please review DCC_specimen_type_mapping.log log file for additional details"
