@@ -22,7 +22,10 @@ For more information, please see Release Notes available at http://docs.icgc.org
 2. specimen_type_mapping.py
 	This Python script will map specimen_type DCC terms used in Release 16 to the current specimen_type codelist in Release 17. 
 
-3. oldDCC_to_newDCC_specimen_type_mapping.txt
+3. mapping_specimen_type.pl
+	An alternative Perl script that will perform the same function as the Python specimen_type_mapping.py script.
+
+4. oldDCC_to_newDCC_specimen_type_mapping.txt
 	A tab-delimited file consisting of a mapping between the old DCC specimen_type terms and the current DCC specimen_type terms. For more details, please review documentation at http://docs.icgc.org/specimen-type-mapping 
 
 
@@ -30,14 +33,21 @@ Requirements:
 =============
 
 - Linux
-- Python:
+- If using Python script specimen_type_mapping.py:
+
   - at least Python 2.7
 
-  Python Modules:
+   Python Modules:
    - gzip		https://docs.python.org/2/library/gzip.html
    - bz2 		https://docs.python.org/2/library/bz2.html
    - fnmatch	 	https://docs.python.org/2/library/fnmatch.html
    - collections	https://docs.python.org/2/library/collections.html
+
+- If using Perl script mapping_specimen_type.pl:
+  
+   Perl Modules:
+   - PerlIO::gzip	http://search.cpan.org/~majensen/PerlIO-via-gzip-0.021/lib/PerlIO/via/gzip.pm
+   - PerlIO::via::Bzip2	http://search.cpan.org/~arjen/PerlIO-via-Bzip2-0.02/lib/PerlIO/via/Bzip2.pm
 
 
 Instructions:
@@ -54,11 +64,16 @@ To execute:
 	   > ./remove_columns.sh -i <name of directory where Release 16 submission files are located>
 
 
-2. Convert old DCC specimen_type terms to new DCC specimen_type terms: 
+2. Convert old DCC specimen_type terms to new DCC specimen_type terms. Both a Perl version and a Python version are offered to perform this conversion - you only need to use one! (ie. if you are a Perl user, use can use the Perl version)
 
 To execute:
 
+  - If using Python script (specimen_type_mapping.py):
    	> python specimen_type_mapping.py -i <name of input directory>
+
+  - Alternatively, if you prefer the Perl script (mapping_specimen_type.pl):
+  	> perl mapping_specimen_type.pl <name of input directory>
+
 
 IMPORTANT NOTES: 
 
@@ -79,6 +94,6 @@ ________________________________________________________________________________
 |_______________________|_______________________|_______________________________________________|______________________|
 
 
-3. Once files are converted, upload submission files to submission system at http://submissions.dcc.icgc.org and validate. If files are valid, please sign-off on your submission for it be included in Release 17.
+3. Once files are converted, upload submission files to submission system at http://submissions.dcc.icgc.org and validate. If files are valid, please sign-off on your submission for it be included in Release 17 (** before submission deadline August 15th).
 
-For questions, please contact dcc-support@icgc.org
+For questions or concerns, please contact dcc-support@icgc.org
